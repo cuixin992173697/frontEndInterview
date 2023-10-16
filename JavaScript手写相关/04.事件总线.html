@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button class="btn">事件总线发射</button>
+    <script>
+      class EventBus {
+        constructor() {
+          this.eventMap = {};
+        }
+        on(eventName, eventFn) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns) {
+            eventFns = [];
+            this.eventMap[eventName] = eventFns;
+          }
+          eventFns.push(eventFn);
+        }
+        off(eventName, eventFn) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns) return;
+          for (let i = 0; i < eventFns.length; i++) {
+            const fn = eventFns[i];
+            if (fn === eventFn) {
+              eventFns.splice(i, 1);
+              break;
+            }
+          }
+
+          // 如果eventFns已经清空了
+          if (eventFns.length === 0) {
+            delete this.eventMap[eventName];
+          }
+        }
+        emit(eventName, ...args) {
+          let eventFns = this.eventMap[eventName];
+          if (!eventFns.length) return;
+          eventFns.forEach((fn) => fn(...args));
+        }
+      }
+
+      // 使用
+      const cuixinEventBus = new EventBus();
+
+      cuixinEventBus.on("cuixinClick", (cuixin) => {
+        console.log("cuixinClick", cuixin + "找到了offer");
+      });
+
+      cuixinEventBus.on("moseClick", (mose) => {
+        console.log("moseClick", mose + "找到了大厂offer");
+      });
+
+      const testOffFn = (mose) => {
+        console.log("moseClick", mose + "被毁约啦");
+      };
+
+      cuixinEventBus.on("moseClick", testOffFn);
+
+      setTimeout(() => {
+        cuixinEventBus.off("moseClick", testOffFn);
+      }, 5000);
+
+      const btn = document.querySelector(".btn");
+      btn.onclick = function () {
+        cuixinEventBus.emit("cuixinClick", "cuixin");
+        cuixinEventBus.emit("moseClick", "mose");
+      };
+    </script>
+  </body>
+</html>
