@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function foo(name, age) {
+        console.log(this, name, age);
+      }
+
+      Function.prototype.cxcall = function (thisArg, ...otherArgs) {
+        thisArg.fn = this;
+        thisArg = thisArg === undefined || thisArg === null ? window : Object(thisArg);
+        Object.defineProperty(thisArg, "fn", {
+          enumerable: false,
+          configurable: true,
+          value: this,
+        });
+        thisArg.fn(...otherArgs);
+        delete thisArg.fn;
+      };
+
+      foo.cxcall({name: 'mose'}, 'cuixin', 18)
+      foo.cxcall(666, 'cuixin', 18)
+      foo.cxcall(null, 'cuixin', 18)
+
+    </script>
+  </body>
+</html>
