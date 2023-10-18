@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button>按钮</button>
+  <input type="text">
+  
+  <script>
+    function debounce(fn, delay) {
+      // 1.用于记录上一次事件触发的timer
+      let timer = null
+
+      // 2.触发事件时执行的函数
+      return function(...args) {
+        // 2.1.如果有再次触发(更多次触发)事件, 那么取消上一次的事件
+        if (timer) clearTimeout(timer)
+
+        // 2.2.延迟去执行对应的fn函数(传入的回调函数)
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+          timer = null // 执行过函数之后, 将timer重新置null
+        }, delay);
+      }
+    }
+  </script>
+
+  <script>
+    // 1.获取input元素
+    const inputEl = document.querySelector("input")
+    let counter = 1
+    inputEl.oninput = debounce(function(event) {
+      console.log(`发送网络请求${counter++}`, this, event)
+    }, 1000)
+
+    // 2.获取button元素
+    const btn = document.querySelector('button')
+    let num = 1
+    btn.addEventListener('click', debounce(function() {
+      console.log(`按钮点击${num++}`)
+    }, 1000))
+
+  </script>
+
+</body>
+</html>
