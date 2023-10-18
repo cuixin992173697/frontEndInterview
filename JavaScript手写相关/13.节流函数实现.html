@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" />
+    <script>
+      function throttle(fn, interval) {
+        let startTime = 0;
+        return function (...args) {
+          const nowTime = new Date().getTime();
+          const waitTime = interval - (nowTime - startTime);
+          if (waitTime <= 0) {
+            fn.apply(this, args);
+            startTime = nowTime;
+          }
+        };
+      }
+    </script>
+
+    <script>
+      let count = 1
+      let inputEl = document.querySelector('input')
+      inputEl.oninput = throttle(function() {
+        console.log(`发送网络请求${count++}`, this.value)
+      }, 1000)
+    </script>
+  </body>
+</html>
