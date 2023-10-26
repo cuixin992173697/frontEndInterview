@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <button class="btn1">btn1按钮</button>
+  <script>
+    // 1.默认绑定
+    // function test1() {
+    //   console.log("test1 this:", this) 
+    //   test2()
+    // }
+
+    // function test2() {
+    //   console.log("test2 this:", this)
+    //   test3()
+    // }
+
+    // function test3() {
+    //   console.log("test3 this:", this)
+    // }
+
+    // test1()
+
+    // 2.隐式绑定
+    // function foo() {
+    //   console.log(this)
+    // }
+
+    // const obj1 = {
+    //   name: 'obj1',
+    //   foo: foo
+    // }
+
+    // const obj2 = {
+    //   name: 'obj2',
+    //   obj1: obj1
+    // }
+
+    // let bar = obj1.foo
+    // bar()
+
+    // obj2.obj1.foo() // obj1
+
+    // 3显示绑定
+
+
+    // 4. new绑定
+    // function Person(name) {
+    //   console.log(this) // Person {}
+    //   this.name = name
+    // }
+
+    // const p = new Person('mose')
+
+    // console.log(p)  // Person { name : 'mose'}
+
+    // 5. 特殊情况
+    // setTimeout(function() {
+    //   console.log(this) // window
+    // }, 1000 )
+
+    // const names = ['mose', 'cuixin', 'james']
+    // const obj = {name: 'obj'}
+    // names.forEach( function(name) {
+    //   console.log(this) // obj
+    // }, obj)
+
+    let btn = document.querySelector('.btn1')
+
+    btn.onclick = function() {
+      console.log( this === btn ) // true
+    }
+  </script>
+</body>
+</html>
